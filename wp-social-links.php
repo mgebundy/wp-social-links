@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: WP Social Links
-Plugin URI: http://www.bundy.ca/
-Description: Social links everywhere!!
-Version: 0.3
+Plugin URI: http://www.bundy.ca/wp-social-links
+Description: Hook into any post type. Social links everywhere! Great for company profiles, radio or TV programs, post author pages, and more!
+Version: 0.3.1
 Author: Mitchell Bundy
 Author URI: http://www.bundy.ca/
 */
@@ -111,7 +111,7 @@ if (!class_exists("SocialLinksMB")) {
 			'show_name' => true, // Show social site's name in link, useful for CSS using background.
 			'show_div' => true, // Show the wrapper DIV
 			'div_class' => 'wp-social-links', // Class for the wrapper DIV
-			'version' => 0.3, // Plugin Version
+			'version' => '0.3.1', // Plugin Version
 			'limit' => 0 // 0 = unlimited
 		);
 		
@@ -120,24 +120,33 @@ if (!class_exists("SocialLinksMB")) {
 		private $special_post_types = array(
 			'users'
 		);
-		
+				
 		function __construct() {
 			// Check database for default setting overrides
 			//delete_option('wp-social-links');
 			$options = get_option('wp-social-links');
-			if ($options) {
-				$options = maybe_unserialize($options);
-				if (is_array($options)) {
-					$this->sites = $options['sites'];
-					$this->post_types = $options['post_types'];
-					unset($options['sites'], $options['post_types']);
-					$this->options = $options;
-					ksort($this->sites);
+			$options = maybe_unserialize($options);
+			
+			// Do updates
+			if (is_array($options)) {
+				// nothing to do for version 0.3.1, update version number.
+				
+				// change version number. We didn't use a string in 0.3, so we gotta fix that...
+				if ((string)$options['version'] != $this->options['version']) {
+					$options['version'] = $this->options['version'];
 				}
-			} else {
-				// Set option to defaults if it doesn't exist
-				$this->update_options();
 			}
+			
+			if ($options && is_array($options)) {
+				$this->sites = $options['sites'];
+				$this->post_types = $options['post_types'];
+				unset($options['sites'], $options['post_types']);
+				$this->options = $options;
+				ksort($this->sites);
+			}
+			// Set option to defaults if it doesn't exist. Update any changes
+			$this->update_options();
+			
 			// Action Hooks
 			add_action('admin_menu', array($this,'meta_boxes') );
 			add_action('save_post', array($this, 'save_postdata'), 10, 2 );
@@ -156,6 +165,18 @@ if (!class_exists("SocialLinksMB")) {
 			
 			// Filters
 			add_filter('screen_settings', array($this, 'screen_options'), 10, 2);
+			add_filter('plugin_row_meta', array($this, 'plugin_links'), 10, 2);
+		}
+		
+		function plugin_links($links, $file) {
+			if ( $file == plugin_basename(__FILE__) )
+			{
+				$links[] = '<a href="http://www.bundy.ca/wp-social-links" target="_blank">' . __('Docs') . '</a>';
+				$links[] = '<a href="http://wordpress.org/tags/wp-social-links?forum_id=10" target="_blank">' . __('Support') . '</a>';
+				$links[] = '<a href="http://www.bundy.ca/contact" target="_blank">' . __('Donate') . '</a>';
+			}
+			
+			return $links;
 		}
 		
 		function set_post_type_supports() {
@@ -224,8 +245,10 @@ if (!class_exists("SocialLinksMB")) {
 		
 		function get_type_meta($id, $post_type) {
 			if ($post_type == 'users') {
+				// Get User Meta, because it's not a real post type.
 				return get_user_meta($id, 'wpsociallinks', true);
 			} else {
+				// Otherwise, we'll get the the post data
 				return get_post_meta($id, 'wp-social-links', true);
 			}
 		}
@@ -233,12 +256,13 @@ if (!class_exists("SocialLinksMB")) {
 		function links_box($pt = NULL, $pid = NULL) {
 			global $post_type;
 			if (empty($post_type) && $pt) $post_type = $pt;
-			if (!empty($pt) && !empty($pid)) {
+			if (!empty($pt) && !empty($pid) && !is_array($pid)) {
 				$id = $pid;
 			} else {
 				$id = $_GET['post'];
 			}
 			$links = $this->get_type_meta($id, $post_type);
+
 			$links = maybe_unserialize($links);
 			$sites = $this->get_post_type_sites($post_type);
 			echo '<input type="hidden" name="wp-social-links_noncename" id="wp-social-links_noncename" value="' . 
@@ -322,7 +346,7 @@ if (!class_exists("SocialLinksMB")) {
 			if ( !wp_verify_nonce( $_POST['wp-social-links_noncename'], plugin_basename(__FILE__) )) {
 				return $post_id;
 			  }
-			 
+			
 			if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) 
 				 return $post_id;
 			if ( !$this->post_type_supports($_POST['post_type'], 'wp-social-links') ) {
