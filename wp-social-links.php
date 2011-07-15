@@ -59,6 +59,11 @@ if (!class_exists("SocialLinksMB")) {
 				'title' => 'Follow %s on Twitter',
 				'active' => true
 			),
+			'linkedin' => array(
+				'name' => 'LinkedIn',
+				'title' => 'Add %s to your LinkedIn network',
+				'active' => true
+			),
 			'myspace' => array(
 				'name' => 'MySpace',
 				'title' => 'Add %s as a friend on MySpace',
@@ -926,26 +931,32 @@ if (!class_exists("SocialLinksMB")) {
                                 <div class="form-field">
                                     <label for="name"><?=__('Name')?></label>
                                     <input type="text" name="name" size="20" value="<?=stripslashes($_POST['name'])?>" />
+                                    <p><?php _e('The name is how it appears on your site.') ?></p>
                                 </div>
                                 <div class="form-field">
                                     <label for="slug"><?=__('Slug')?></label>
                                     <input type="text" name="slug" size="20" value="<?=stripslashes($_POST['slug'])?>" <?=(!empty($_REQUEST['edit']) ? ' disabled="disabled"' : '')?> />
+                                    <p><?php _e('This is used to identify the site.') ?></p>
                                 </div>
                                 <div class="form-field">
                                     <label for="title"><?=__('Title')?></label>
                                     <input type="text" name="title" size="20" value="<?=stripslashes($_POST['title'])?>" />
+                                    <p><?php _e('This will be used in the title attribute of the site link. Use %s to indicate the post title.') ?></p>
                                 </div>
                                 <div class="form-field field-class <?=(empty($user_options['screen_opt-sites']['class-hide']) ?  'hidden-field' : '')?>">
                                     <label for="class"><?=__('CSS Class')?></label>
                                     <input type="text" name="class" size="20" value="<?=stripslashes($_POST['class'])?>" />
+                                    <p><?php _e('The CSS class of the post link, will replace the slug as the CSS class.') ?></p>
                                 </div>
                                 <div class="form-field field-href_pre <?=(empty($user_options['screen_opt-sites']['href_pre-hide']) ?  'hidden-field' : '')?>">
                                     <label for="href_pre"><?=__('Before URL')?></label>
                                     <input type="text" name="href_pre" size="20" value="<?=stripslashes($_POST['href_pre'])?>" />
+                                    <p><?php _e('What appears ahead of the link attribute. (ex. mailto:)') ?></p>
                                 </div>
                                 <div class="form-field field-href_post <?=(empty($user_options['screen_opt-sites']['href_post-hide']) ?  'hidden-field' : '')?>">
                                     <label for="href_pre"><?=__('After URL')?></label>
                                     <input type="text" name="href_post" size="20" value="<?=stripslashes($_POST['href_post'])?>" />
+                                    <p><?php _e('What appears after of the link attribute. (ex. ?subject=Subject)') ?></p>
                                 </div>
                                 <p class="submit">
                                 	<input type="submit" name="submit" id="submit" class="button" value="<?=(empty($_REQUEST['edit']) ? __('Add New Site') : __('Save Site'))?>">
