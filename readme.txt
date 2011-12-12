@@ -3,7 +3,7 @@ Contributors: mitchbundy
 Donate link: http://www.bundy.ca/contact
 Tags: social, social link, links, facebook, twitter, profiles
 Requires at least: 3.0
-Tested up to: 3.2
+Tested up to: 3.3
 Stable tag: 0.3.1
 
 Social Links Everywhere!
