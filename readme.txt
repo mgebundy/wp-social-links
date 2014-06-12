@@ -23,8 +23,7 @@ Social media icons by [IconDock](http://icondock.com/)
 
 Please find support in the following places:
 
-1. [Documentation](http://www.bundy.ca/wp-social-links)
-1. [FAQ](http://www.bundy.ca/wp-social-links/faq)
+1. [Documentation](https://github.com/mgebundy/wp-social-links/wiki)
 1. [Support Forums](http://wordpress.org/tags/wp-social-links?forum_id=10)
 
 

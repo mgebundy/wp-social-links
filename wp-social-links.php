@@ -171,9 +171,8 @@ if (!class_exists("SocialLinksMB")) {
 		function plugin_links($links, $file) {
 			if ( $file == plugin_basename(__FILE__) )
 			{
-				$links[] = '<a href="http://www.bundy.ca/wp-social-links" target="_blank">' . __('Docs') . '</a>';
+				$links[] = '<a href="https://github.com/mgebundy/wp-social-links/wiki" target="_blank">' . __('Docs') . '</a>';
 				$links[] = '<a href="http://wordpress.org/tags/wp-social-links?forum_id=10" target="_blank">' . __('Support') . '</a>';
-				$links[] = '<a href="http://www.bundy.ca/contact" target="_blank">' . __('Donate') . '</a>';
 			}
 			
 			return $links;
@@ -272,7 +271,7 @@ if (!class_exists("SocialLinksMB")) {
 				width:500px;
 			}
 			</style>
-			<table width="100%" cellpadding="0" cellspacing="0" border="0"<?=(($post_type == 'users') ? ' class="form-table"' : '')?>>
+			<table width="100%" cellpadding="0" cellspacing="0" border="0"<?php echo (($post_type == 'users') ? ' class="form-table"' : '')?>>
 			<tbody id="wp-social-links-inner">
             <?php
 			if ($links) {
@@ -306,7 +305,7 @@ if (!class_exists("SocialLinksMB")) {
 				var url = jQuery('#wp-social-links-new').val();
 				var name = jQuery('#wp-social-links-option-'+type).html();
 				if (url != '') {
-					jQuery('#wp-social-links-inner').append('<tr id="wp-social-links-'+type+'"><td class="name">'+name+'</td> <td class="input"><input type="text" class="url regular-text" name="wp-social-links['+type+'][url]" value="'+url+'" /> <input type="button" class="button wp-social-links-remove" value="<?=__('Remove')?>" /></td></tr>');
+					jQuery('#wp-social-links-inner').append('<tr id="wp-social-links-'+type+'"><td class="name">'+name+'</td> <td class="input"><input type="text" class="url regular-text" name="wp-social-links['+type+'][url]" value="'+url+'" /> <input type="button" class="button wp-social-links-remove" value="<?php echo __('Remove')?>" /></td></tr>');
 					jQuery('#wp-social-links-option-'+type).remove();
 					jQuery('#wp-social-links-new').val('');
 				}
@@ -389,10 +388,10 @@ if (!class_exists("SocialLinksMB")) {
 		<div class="wrap">
         	<?php screen_icon();?>
             <h2 class="nav-tab-wrapper">
-            	<?=__('WP Social Links')?>
-            	<a href="<?=admin_url('options-general.php?page=wp-social-links')?>" class="nav-tab <?=(empty($_GET['a']) ? 'nav-tab-active' : '')?>"><?=__('Sites')?></a>
-                <a href="<?=admin_url('options-general.php?page=wp-social-links&a=post_types')?>" class="nav-tab<?=($_GET['a'] == 'post_types' ? ' nav-tab-active' : '')?>"><?=__('Post Types')?></a>
-            <? /*    <a href="<?=admin_url('options-general.php?page=wp-social-links&a=options')?>" class="nav-tab<?=($_GET['a'] == 'options' ? ' nav-tab-active' : '')?>"><?=__('Options')?></a>*/?>
+            	<?php echo __('WP Social Links')?>
+            	<a href="<?php echo admin_url('options-general.php?page=wp-social-links')?>" class="nav-tab <?php echo (empty($_GET['a']) ? 'nav-tab-active' : '')?>"><?php echo __('Sites')?></a>
+                <a href="<?php echo admin_url('options-general.php?page=wp-social-links&a=post_types')?>" class="nav-tab<?php echo ($_GET['a'] == 'post_types' ? ' nav-tab-active' : '')?>"><?php echo __('Post Types')?></a>
+            <? /*    <a href="<?php echo admin_url('options-general.php?page=wp-social-links&a=options')?>" class="nav-tab<?php echo ($_GET['a'] == 'options' ? ' nav-tab-active' : '')?>"><?php echo __('Options')?></a>*/?>
             </h2>
             <?php
 				// TODO : Settings page
@@ -539,28 +538,28 @@ if (!class_exists("SocialLinksMB")) {
                         <?php if (!empty($_GET['edit']) && post_type_exists($_GET['edit'])): 
 							$pt_support = $this->post_type_supports($_GET['edit'], 'wp-social-links');?>
                         	<h2>
-							<?=$_GET['edit'].(in_array($_GET['edit'], $this->special_post_types)?' ('.__('special').')':'')?> 
+							<?php echo $_GET['edit'].(in_array($_GET['edit'], $this->special_post_types)?' ('.__('special').')':'')?> 
                             <?php if ($pt_support): ?>
-                            <a href="<?=admin_url('options-general.php?page=wp-social-links&a=post_types&edit='.$_GET['edit'].'&disable='.$_GET['edit'].'&_noncename='.$nonce)?>" class="add-new-h2">Disable</a>
+                            <a href="<?php echo admin_url('options-general.php?page=wp-social-links&a=post_types&edit='.$_GET['edit'].'&disable='.$_GET['edit'].'&_noncename='.$nonce)?>" class="add-new-h2">Disable</a>
                             <?php else: ?>
-                            <a href="<?=admin_url('options-general.php?page=wp-social-links&a=post_types&edit='.$_GET['edit'].'&enable='.$_GET['edit'].'&_noncename='.$nonce)?>" class="add-new-h2">Enable</a>
+                            <a href="<?php echo admin_url('options-general.php?page=wp-social-links&a=post_types&edit='.$_GET['edit'].'&enable='.$_GET['edit'].'&_noncename='.$nonce)?>" class="add-new-h2">Enable</a>
                             <?php endif; ?>
                             </h2>
-                            <form action="<?=admin_url('options-general.php?page=wp-social-links&a=post_types&edit='.$_GET['edit'])?>" method="post">
+                            <form action="<?php echo admin_url('options-general.php?page=wp-social-links&a=post_types&edit='.$_GET['edit'])?>" method="post">
                             <?php if ($pt_support): ?>
-                            <input type="hidden" name="_noncename" value="<?=$nonce?>" />
+                            <input type="hidden" name="_noncename" value="<?php echo $nonce?>" />
                             <div class="alignleft bulk_actions">
                             	<input type="checkbox" />
                             	<select name="action">
-                                	<option><?=__('Bulk Actions')?></option>
-                                	<option value="activate"><?=__('Activate')?></option>
-                                    <option value="deactivate"><?=__('Deactivate')?></option>
+                                	<option><?php echo __('Bulk Actions')?></option>
+                                	<option value="activate"><?php echo __('Activate')?></option>
+                                    <option value="deactivate"><?php echo __('Deactivate')?></option>
                                 </select>
-                                <input type="submit" class="button-secondary action" value="<?=__('Apply')?>" />
+                                <input type="submit" class="button-secondary action" value="<?php echo __('Apply')?>" />
                             </div>
                             <div style="clear:both"><br /></div>
                             <?php endif; ?>
-                            <div class="sites<?=(!$pt_support ? ' disabled' : '')?>">
+                            <div class="sites<?php echo (!$pt_support ? ' disabled' : '')?>">
                             <?php
 							$disabled = array();
 							$post_type_disabled = array();
@@ -593,7 +592,7 @@ if (!class_exists("SocialLinksMB")) {
                             </div>
                             </form>
                         <?php elseif (isset($_GET['edit']) && !post_type_exists($_GET['edit'])): ?>
-                        	<h2><?=__('Invalid Post Type')?></h2>
+                        	<h2><?php echo __('Invalid Post Type')?></h2>
                         <?php endif; ?>
                         </div>
                     </div>
@@ -608,15 +607,15 @@ if (!class_exists("SocialLinksMB")) {
 										$first_inactive = true;
 										?>
                                         <div class="metabox-holder meta-box-sortables">
-                                            <div class="postbox<?=($user_options['disabled_pt_state'] == 'closed' ? ' closed' : '')?>" id="disabled_post_type">
+                                            <div class="postbox<?php echo ($user_options['disabled_pt_state'] == 'closed' ? ' closed' : '')?>" id="disabled_post_type">
                                                 <div class="handlediv" title="Click to toggle"><br></div>
-                                                <h3><?=__('Disabled Post Types')?></h3>
+                                                <h3><?php echo __('Disabled Post Types')?></h3>
                                                 <div class="inside"><br /><?php
 									}
 									?>
-                                    <div class="widget post_type<?=(($_GET['edit'] == $pt) ? ' active' : '')?>">
+                                    <div class="widget post_type<?php echo (($_GET['edit'] == $pt) ? ' active' : '')?>">
                                  	   <div class="handlept"><br /></div>
-                                       <h3><a href="<?=admin_url('options-general.php?page=wp-social-links&a=post_types&edit='.$pt)?>"><?=$pt.(in_array($pt, $this->special_post_types)?' ('.__('special').')':'')?></a></h3>
+                                       <h3><a href="<?php echo admin_url('options-general.php?page=wp-social-links&a=post_types&edit='.$pt)?>"><?php echo $pt.(in_array($pt, $this->special_post_types)?' ('.__('special').')':'')?></a></h3>
                                     </div>
 									<?php
 									$i++;
@@ -653,7 +652,7 @@ if (!class_exists("SocialLinksMB")) {
 				var data = {
 					action: 'save_wp_social_links_collapse_state',
 					state: state,
-					nonce: '<?=$nonce?>'
+					nonce: '<?php echo $nonce?>'
 				};
 				jQuery.post(ajaxurl, data);
 			});
@@ -878,29 +877,29 @@ if (!class_exists("SocialLinksMB")) {
         <div id="col-container">
                 	<div id="col-right">
                     	<div class="col-wrap">
-                        <form action="<?=admin_url('options-general.php?page=wp-social-links')?>" method="post" id="action_form">
-                        <input type="hidden" name="_noncename" id="_noncename" value="<?=$nonce ?>" />
+                        <form action="<?php echo admin_url('options-general.php?page=wp-social-links')?>" method="post" id="action_form">
+                        <input type="hidden" name="_noncename" id="_noncename" value="<?php echo $nonce ?>" />
                         <div class="tablenav top">
                             <div class="alignleft bulk_actions">
                                 <select name="action" id="action">
-                                    <option><?=__('Bulk Actions')?></option>
-                                    <option value="activate"><?=__('Activate')?></option>
-                                    <option value="deactivate"><?=__('Deactivate')?></option>
-                                    <option value="delete"><?=__('Delete')?></option>
+                                    <option><?php _e('Bulk Actions', 'wp-social-links')?></option>
+                                    <option value="activate"><?php _e('Activate', 'wp-social-links')?></option>
+                                    <option value="deactivate"><?php _e('Deactivate', 'wp-social-links')?></option>
+                                    <option value="delete"><?php _e('Delete', 'wp-social-links')?></option>
                                 </select>
-                                <input type="submit" class="button-secondary action" value="<?=__('Apply')?>" />
+                                <input type="submit" class="button-secondary action" value="<?php _e('Apply', 'wp-social-links')?>" />
                             </div>
                             
                             <div class="tablenav-pages">
                                 <span class="displaying-num"><?php printf(__('%s items'), $num_sites)?></span>
                                 <span class="pagination-links">
-                                	<a class="first-page <?=($page == 1) ? 'disabled' : ''?>" title="<?=__('Go to the first page')?>" href="<?=admin_url('options-general.php?page=wp-social-links&p=1')?>">«</a>
-									<a class="prev-page <?=($page == 1) ? 'disabled' : ''?>" title="<?=__('Go to the previous page')?>" href="<?=admin_url('options-general.php?page=wp-social-links&p='.$prev_page)?>">‹</a>
+                                	<a class="first-page<?php echo ($page == 1) ? ' disabled' : ''?>" title="<?php _e('Go to the first page', 'wp-social-links')?>" href="<?php echo admin_url('options-general.php?page=wp-social-links&p=1')?>">«</a>
+									<a class="prev-page<?php echo($page == 1) ? ' disabled' : ''?>" title="<?php _e('Go to the previous page', 'wp-social-links')?>" href="<?php echo admin_url('options-general.php?page=wp-social-links&p='.$prev_page)?>">‹</a>
 									<span class="paging-input">
-                                    	1 <?=__('of')?> <span class="total-pages"><?=$num_pages;?></span>
+                                    	1 <?php _e('of', 'wp-social-links')?> <span class="total-pages"><?php echo $num_pages;?></span>
                                    	</span>
-									<a class="next-page <?=($page == $num_pages) ? 'disabled' : ''?>" title="<?=__('Go to the next page')?>" href="<?=admin_url('options-general.php?page=wp-social-links&p='.$next_page)?>">›</a>
-									<a class="last-page <?=($page == $num_pages) ? 'disabled' : ''?>" title="<?=__('Go to the last page')?>" href="<?=admin_url('options-general.php?page=wp-social-links&p='.$num_pages)?>">»</a></span>
+									<a class="next-page<?php echo ($page == $num_pages) ? ' disabled' : ''?>" title="<?php _e('Go to the next page', 'wp-social-links')?>" href="<?php echo admin_url('options-general.php?page=wp-social-links&p='.$next_page)?>">›</a>
+									<a class="last-page<?php echo ($page == $num_pages) ? ' disabled' : ''?>" title="<?php _e('Go to the last page', 'wp-social-links')?>" href="<?php echo admin_url('options-general.php?page=wp-social-links&p='.$num_pages)?>">»</a></span>
                             </div>
                         </div>
                         
@@ -908,35 +907,35 @@ if (!class_exists("SocialLinksMB")) {
 	<thead>
 	<tr>
 		<th scope="col" id="cb" class="check-column"><input type="checkbox"></th>
-        <th scope="col" id="name"><?=__('Name')?></th>
-        <th scope="col" id="slug"><?=__('Slug')?></th>
+        <th scope="col" id="name"><?php echo __('Name')?></th>
+        <th scope="col" id="slug"><?php echo __('Slug')?></th>
     </tr>
 	</thead>
     
     <tfoot>
 	<tr>
 		<th scope="col" class="manage-column column-cb check-column"><input type="checkbox"></th>
-        <th scope="col" class="manage-column column-name"><?=__('Name')?></th>
-        <th scope="col" class="manage-column column-slug"><?=__('Slug')?></th>
+        <th scope="col" class="manage-column column-name"><?php echo __('Name')?></th>
+        <th scope="col" class="manage-column column-slug"><?php echo __('Slug')?></th>
     </tr>
 	</tfoot>
 
 	<tbody id="the-list" class="list:tag">
     <?php foreach ($sites as $slug => $site) { ?>
-				<tr<?=(!$site['active'] ? ' style="background-color:#DFDFDF;"' : '')?> valign="top">
-                    <th scope="row" class="check-column"><input type="checkbox" name="sites[]" value="<?=$slug?>"></th>
-                    <td class="post-name site-name column-name"><strong><a class="row-name" href="<?=admin_url('options-general.php?page=wp-social-links&edit='.$slug)?>" title="Edit \"<?=$site['name']?>\""><?=stripslashes($site['name'])?></a></strong>
+				<tr<?php echo (!$site['active'] ? ' style="background-color:#DFDFDF;"' : '')?> valign="top">
+                    <th scope="row" class="check-column"><input type="checkbox" name="sites[]" value="<?php echo $slug?>"></th>
+                    <td class="post-name site-name column-name"><strong><a class="row-name" href="<?php echo admin_url('options-general.php?page=wp-social-links&edit='.$slug)?>" title="Edit \"<?php echo $site['name']?>\""><?php echo stripslashes($site['name'])?></a></strong>
     <div class="row-actions">
-        <span class="edit"><a href="<?=admin_url('options-general.php?page=wp-social-links&p='.$page.'&edit='.$slug)?>" title="Edit this item">Edit</a> | </span>
+        <span class="edit"><a href="<?php echo admin_url('options-general.php?page=wp-social-links&p='.$page.'&edit='.$slug)?>" title="Edit this item">Edit</a> | </span>
         <?php if ($site['active']): ?>
-        <a href="<?=admin_url('options-general.php?page=wp-social-links&p='.$page.'&action=deactivate&sites[]='.$slug.'&_noncename='.$nonce) ?>" class="deactivate" title="Deactivate this item">Deactivate</a> |
+        <a href="<?php echo admin_url('options-general.php?page=wp-social-links&p='.$page.'&action=deactivate&sites[]='.$slug.'&_noncename='.$nonce) ?>" class="deactivate" title="Deactivate this item">Deactivate</a> |
         <?php else: ?>
-        <a href="<?=admin_url('options-general.php?page=wp-social-links&p='.$page.'&action=activate&sites[]='.$slug.'&_noncename='.$nonce)?>" class="activate" title="Activate this item">Activate</a> |
+        <a href="<?php echo admin_url('options-general.php?page=wp-social-links&p='.$page.'&action=activate&sites[]='.$slug.'&_noncename='.$nonce)?>" class="activate" title="Activate this item">Activate</a> |
         <?php endif;?> 
-        <span class="trash"><a class="submitdelete" title="Delete this item" href="<?=admin_url('options-general.php?page=wp-social-links&p='.$page.'&action=delete&sites[]='.$slug.'&_noncename='.$nonce)?>">Delete</a></span>
+        <span class="trash"><a class="submitdelete" title="Delete this item" href="<?php echo admin_url('options-general.php?page=wp-social-links&p='.$page.'&action=delete&sites[]='.$slug.'&_noncename='.$nonce)?>">Delete</a></span>
     </div>
     </td>			
-                    <td class="slug column-slug"><?=$slug?></td>
+                    <td class="slug column-slug"><?php echo $slug?></td>
             </tr>
       <?php } ?>
 		</tbody>
@@ -948,42 +947,42 @@ if (!class_exists("SocialLinksMB")) {
 					<div id="col-left">
                     	<div class="col-wrap">
                         	<div class="form-wrap">
-                            	<form action="<?=admin_url('options-general.php?page=wp-social-links'.(!empty($_REQUEST['edit']) ? '&edit='.$_REQUEST['edit'] :''))?>" method="post">
-                                <input type="hidden" name="_noncename" id="_noncename" value="<?=$nonce ?>" />
-                                <input type="hidden" name="edit" value="<?=$_REQUEST['edit']?>" />
-                            	<h3><?=(empty($_REQUEST['edit']) ? __('Add New Site') : __('Edit Site'))?></h3>
+                            	<form action="<?php echo admin_url('options-general.php?page=wp-social-links'.(!empty($_REQUEST['edit']) ? '&edit='.$_REQUEST['edit'] :''))?>" method="post">
+                                <input type="hidden" name="_noncename" id="_noncename" value="<?php echo $nonce ?>" />
+                                <input type="hidden" name="edit" value="<?php echo $_REQUEST['edit']?>" />
+                            	<h3><?php echo (empty($_REQUEST['edit']) ? __('Add New Site') : __('Edit Site'))?></h3>
                                 <div class="form-field">
-                                    <label for="name"><?=__('Name')?></label>
-                                    <input type="text" name="name" size="20" value="<?=stripslashes($_POST['name'])?>" />
+                                    <label for="name"><?php echo __('Name')?></label>
+                                    <input type="text" name="name" size="20" value="<?php echo stripslashes($_POST['name'])?>" />
                                     <p><?php _e('The name is how it appears on your site.') ?></p>
                                 </div>
                                 <div class="form-field">
-                                    <label for="slug"><?=__('Slug')?></label>
-                                    <input type="text" name="slug" size="20" value="<?=stripslashes($_POST['slug'])?>" <?=(!empty($_REQUEST['edit']) ? ' disabled="disabled"' : '')?> />
+                                    <label for="slug"><?php echo __('Slug')?></label>
+                                    <input type="text" name="slug" size="20" value="<?php echo stripslashes($_POST['slug'])?>" <?php echo (!empty($_REQUEST['edit']) ? ' disabled="disabled"' : '')?> />
                                     <p><?php _e('This is used to identify the site.') ?></p>
                                 </div>
                                 <div class="form-field">
-                                    <label for="title"><?=__('Title')?></label>
-                                    <input type="text" name="title" size="20" value="<?=stripslashes($_POST['title'])?>" />
+                                    <label for="title"><?php echo __('Title')?></label>
+                                    <input type="text" name="title" size="20" value="<?php echo stripslashes($_POST['title'])?>" />
                                     <p><?php _e('This will be used in the title attribute of the site link. Use %s to indicate the post title.') ?></p>
                                 </div>
-                                <div class="form-field field-class <?=(empty($user_options['screen_opt-sites']['class-hide']) ?  'hidden-field' : '')?>">
-                                    <label for="class"><?=__('CSS Class')?></label>
-                                    <input type="text" name="class" size="20" value="<?=stripslashes($_POST['class'])?>" />
+                                <div class="form-field field-class <?php echo (empty($user_options['screen_opt-sites']['class-hide']) ?  'hidden-field' : '')?>">
+                                    <label for="class"><?php echo __('CSS Class')?></label>
+                                    <input type="text" name="class" size="20" value="<?php echo stripslashes($_POST['class'])?>" />
                                     <p><?php _e('The CSS class of the post link, will replace the slug as the CSS class.') ?></p>
                                 </div>
-                                <div class="form-field field-href_pre <?=(empty($user_options['screen_opt-sites']['href_pre-hide']) ?  'hidden-field' : '')?>">
-                                    <label for="href_pre"><?=__('Before URL')?></label>
-                                    <input type="text" name="href_pre" size="20" value="<?=stripslashes($_POST['href_pre'])?>" />
+                                <div class="form-field field-href_pre <?php echo (empty($user_options['screen_opt-sites']['href_pre-hide']) ?  'hidden-field' : '')?>">
+                                    <label for="href_pre"><?php echo __('Before URL')?></label>
+                                    <input type="text" name="href_pre" size="20" value="<?php echo stripslashes($_POST['href_pre'])?>" />
                                     <p><?php _e('What appears ahead of the link attribute. (ex. mailto:)') ?></p>
                                 </div>
-                                <div class="form-field field-href_post <?=(empty($user_options['screen_opt-sites']['href_post-hide']) ?  'hidden-field' : '')?>">
-                                    <label for="href_pre"><?=__('After URL')?></label>
-                                    <input type="text" name="href_post" size="20" value="<?=stripslashes($_POST['href_post'])?>" />
+                                <div class="form-field field-href_post <?php echo (empty($user_options['screen_opt-sites']['href_post-hide']) ?  'hidden-field' : '')?>">
+                                    <label for="href_pre"><?php echo __('After URL')?></label>
+                                    <input type="text" name="href_post" size="20" value="<?php echo stripslashes($_POST['href_post'])?>" />
                                     <p><?php _e('What appears after of the link attribute. (ex. ?subject=Subject)') ?></p>
                                 </div>
                                 <p class="submit">
-                                	<input type="submit" name="submit" id="submit" class="button" value="<?=(empty($_REQUEST['edit']) ? __('Add New Site') : __('Save Site'))?>">
+                                	<input type="submit" name="submit" id="submit" class="button" value="<?php echo (empty($_REQUEST['edit']) ? __('Add New Site') : __('Save Site'))?>">
                                 </p>
                                 </form>
                             </div>
@@ -992,12 +991,12 @@ if (!class_exists("SocialLinksMB")) {
 		</div>
         <script type="text/javascript">
 		jQuery('.submitdelete').click(function() {
-			return confirm('<?=__('Are you sure?')?>');
+			return confirm('<?php echo __('Are you sure?')?>');
 		});
 		jQuery('#action_form').submit(function() {
 			val = jQuery('#action option:selected').val();
 			if (val == 'delete')
-				return confirm('<?=__('Are you sure?')?>');
+				return confirm('<?php echo __('Are you sure?')?>');
 			return true;
 		});
 		jQuery('.advanced').click(function() {
@@ -1022,7 +1021,7 @@ if (!class_exists("SocialLinksMB")) {
 				action: 'save_wp_social_links_screen_options',
 				id: id,
 				state: state,
-				nonce: '<?=$nonce?>'
+				nonce: '<?php echo $nonce?>'
 			};
 			jQuery.post(ajaxurl, data);
 		});
